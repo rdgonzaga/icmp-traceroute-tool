@@ -1,4 +1,24 @@
-# icmp-traceroute-tool
+# ICMP Traceroute Tool
+Python based tool that implements the traceroute utility using ICMP Echo Request and Reply messages via Raw Sockets. It maps the path that data packets take to a destination server across an IP network, record RTT and IP addresses of intermediate routers/hops. The tool also integrates with the `ip-api.com` service to automatically display geolocation data (City, Region, Country) and ISP information for each hop.
+
+## Requirements & Usage
+* Python 3.6+
+
+1. Open a terminal (Command Prompt, PowerShell, or bash) with Administrator/root privileges.
+2. Run the script:
+   ```bash
+   python traceroute.py
+   ```
+
+## Troubleshooting (Windows)
+
+By dfefault the Windows Defender Firewall strictly blocks incoming ICMP Type 11 messages. If your traceroute requests are all timing out, either temporarily disable or add an excetion to allow all inbound ICMPv4 traffic.
+
+One can do this either through Control Panel or the ff. netsh command:
+```cmd
+netsh advfirewall firewall add rule name="Allow ICMPv4-In" protocol=icmpv4:any,any dir=in action=allow
+```
+
 
 ## Declaration of Tools and AI Use
 
