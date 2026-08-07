@@ -1,4 +1,6 @@
 # ICMP Traceroute Tool
+> Authors: CHIU, Lance, DESCALZO, Alberto, GONZAGA, Rainer | NSCOM02 S04 
+ 
 Python based tool that implements the traceroute utility using ICMP Echo Request and Reply messages via Raw Sockets. It maps the path that data packets take to a destination server across an IP network, record RTT and IP addresses of intermediate routers/hops. The tool also integrates with the `ip-api.com` service to automatically display geolocation data (City, Region, Country) and ISP information for each hop.
 
 ## Requirements & Usage
