@@ -12,7 +12,7 @@ Python based tool that implements the traceroute utility using ICMP Echo Request
 
 ## Troubleshooting (Windows)
 
-By dfefault the Windows Defender Firewall strictly blocks incoming ICMP Type 11 messages. If your traceroute requests are all timing out, either temporarily disable or add an excetion to allow all inbound ICMPv4 traffic.
+By default the Windows Defender Firewall strictly blocks incoming ICMP Type 11 messages. If your traceroute requests are all timing out, either temporarily disable or add an excetion to allow all inbound ICMPv4 traffic.
 
 One can do this either through Control Panel or the ff. netsh command:
 ```cmd
