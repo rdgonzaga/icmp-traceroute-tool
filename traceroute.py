@@ -5,6 +5,8 @@ import struct
 import time
 import select
 import binascii
+import requests
+import json
 
 ICMP_ECHO_REQUEST = 8
 MAX_HOPS = 30
@@ -69,6 +71,41 @@ def build_packet():
     packet = header + data
     return packet
 
+IP_CACHE = {}
+
+def get_geolocation(ip):
+    # Skip private IPs
+    if ip.startswith("192.168.") or ip.startswith("10.") or ip.startswith("172."):
+        return ""
+    if ip in IP_CACHE:
+        return IP_CACHE[ip]
+    
+    try:
+        response = requests.get(f"http://ip-api.com/json/{ip}", timeout=3)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("status") == "success":
+                city = data.get("city", "")
+                region = data.get("regionName", "")
+                country = data.get("country", "")
+                org = data.get("org", "")
+                
+                loc_parts = [p for p in (city, region, country) if p]
+                loc_str = ", ".join(loc_parts)
+                
+                geo_info = f"[{loc_str}]"
+                if org:
+                    geo_info += f" (ISP: {org})"
+                
+                IP_CACHE[ip] = geo_info
+                time.sleep(0.5) # simple delay to respect 45 req/min free tier
+                return f" {geo_info}"
+    except Exception:
+        pass
+    
+    IP_CACHE[ip] = ""
+    return ""
+
 def get_route(hostname):
     timeLeft = TIMEOUT
     for ttl in range(1,MAX_HOPS):
@@ -110,18 +147,21 @@ def get_route(hostname):
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    print(" %d rtt=%.0f ms %s" %(ttl, (timeReceived -t)*1000, addr[0]))
+                    geo = get_geolocation(addr[0])
+                    print(" %d rtt=%.0f ms %s%s" %(ttl, (timeReceived -t)*1000, addr[0], geo))
 
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    print(" %d rtt=%.0f ms %s" %(ttl, (timeReceived-t)*1000, addr[0]))
+                    geo = get_geolocation(addr[0])
+                    print(" %d rtt=%.0f ms %s%s" %(ttl, (timeReceived-t)*1000, addr[0], geo))
                     return
 
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    print(" %d rtt=%.0f ms %s" %(ttl, (timeReceived - timeSent)*1000, addr[0]))
+                    geo = get_geolocation(addr[0])
+                    print(" %d rtt=%.0f ms %s%s" %(ttl, (timeReceived - timeSent)*1000, addr[0], geo))
                     return
 
                 else:
@@ -132,4 +172,10 @@ def get_route(hostname):
             finally:
                 mySocket.close()
 
-get_route("google.com")
+if __name__ == '__main__':
+    print("Traceroute to google.com:")
+    get_route("google.com")
+    print("\nTraceroute to dlsu.instructure.com:")
+    get_route("dlsu.instructure.com")
+    print("\nTraceroute to www.dlsu.edu.ph:")
+    get_route("www.dlsu.edu.ph")
