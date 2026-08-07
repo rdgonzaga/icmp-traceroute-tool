@@ -36,3 +36,11 @@ All LLMs used for analyzing the project specifications, identifying remaining ta
 5. *"Running py traceroute.py.. all my requests just time out, why is that? Could it be a firewall issue?"*
 6. *"How do I extract the exact round-trip time (RTT) from the struct.unpack payload?"*
 7. *"Ran this on my VPS [output showing timeouts and successful final hop] is this normal? Why do some routers drop the ICMP packets?"*
+
+## References
+
+1. Postel, J. (1981). *Internet Control Message Protocol* (RFC 792). IETF. https://datatracker.ietf.org/doc/html/rfc792
+2. Python Software Foundation. (n.d.). *socket — Low-level networking interface*. Python 3 Documentation. https://docs.python.org/3/library/socket.html
+3. Python Software Foundation. (n.d.). *struct — Interpret bytes as packed binary data*. Python 3 Documentation. https://docs.python.org/3/library/struct.html
+4. IP-API.com. (n.d.). *JSON API Documentation*. IP-API. https://ip-api.com/docs/api:json
+5. Microsoft. (n.d.). *Windows Defender Firewall with Advanced Security*. Microsoft Learn. https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/
