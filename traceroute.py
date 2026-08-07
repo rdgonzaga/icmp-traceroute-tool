@@ -173,9 +173,34 @@ def get_route(hostname):
                 mySocket.close()
 
 if __name__ == '__main__':
-    print("Traceroute to google.com:")
-    get_route("google.com")
-    print("\nTraceroute to dlsu.instructure.com:")
-    get_route("dlsu.instructure.com")
-    print("\nTraceroute to www.dlsu.edu.ph:")
-    get_route("www.dlsu.edu.ph")
+    while True:
+        print("\n=== ICMP Traceroute Utility ===")
+        print("[1] google.com")
+        print("[2] dlsu.instructure.com")
+        print("[3] www.dlsu.edu.ph")
+        print("[4] All")
+        print("[5] Exit")
+        
+        choice = input("Enter your choice (1-5): ").strip()
+        
+        if choice == '1':
+            print("\nTraceroute to google.com:")
+            get_route("google.com")
+        elif choice == '2':
+            print("\nTraceroute to dlsu.instructure.com:")
+            get_route("dlsu.instructure.com")
+        elif choice == '3':
+            print("\nTraceroute to www.dlsu.edu.ph:")
+            get_route("www.dlsu.edu.ph")
+        elif choice == '4':
+            print("\nTraceroute to google.com:")
+            get_route("google.com")
+            print("\nTraceroute to dlsu.instructure.com:")
+            get_route("dlsu.instructure.com")
+            print("\nTraceroute to www.dlsu.edu.ph:")
+            get_route("www.dlsu.edu.ph")
+        elif choice == '5':
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
